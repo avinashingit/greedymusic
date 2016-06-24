@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static 'custom.css' %}" type="text/css">
+</head>
+
+<body>
+
+	<nav class="navbar navbar-inverse" style="">
+	  	<div class="container-fluid">
+	    	<!-- <div class="navbar-header">
+	      		<a class="navbar-brand" href="#">
+	       			<h2>Greedymusic</h2>
+	     		</a>
+	   		</div> -->
+	   		<div class="col-md-3 col-md-offset-5 text-center">
+	   			<a class="navbar-brand title" href="/greedymusic">Greedymusic Webapp</a>
+	   		</div>
+	  	</div>
+	</nav>
+
+
+	<div class="row">
+
+		<div class="col-md-4 col-md-offset-4 text-center">
+
+			<div class="input-group">
+
+				<div class="input-group-btn">
+
+					<form method="POST" action="{% url 'greedymusic:search' %}">
+						{% csrf_token %}
+
+						<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+
+					
+
+				</div>
+
+				
+
+					<input type="text" name="keyword" id="search" class="form-control" placeholder="Search">
+
+				</form>
+
+				<div class="input-group-btn">
+
+					<button class="btn btn-default" type="button" onclick="document.getElementById('search').value='';"><span class="glyphicon glyphicon-remove-circle"></span></button>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="row">
+
+		<div class="col-md-6 col-md-offset-3 text-center">
+
+			
+
+			<br/>
+
+				{% if track_list %}
+					<div class="panel panel-danger">
+						  <div class="panel-heading">
+						  	<a href="/greedymusic/tracks/1">TRACKS</a>
+						  </div>
+						  <!-- <div class="panel-body"> -->
+						  	<table class="table table-striped">
+						  		<tr>
+						  		<td><b>ID</b></td>
+						  		<td><b>Title</b></td>
+						  		<td><b>Genre</b></td>
+						  		<td><b>Rating</b></td>
+						  		<td><b>Options</b></td>
+						  		</tr>
+
+					{% for track in track_list %}
+
+						
+						  
+
+							  	<tr>
+
+							  		<td><a href="{% url 'greedymusic:detailTrack' track.id %}">{{track.id}}</a></td>
+
+							  		<td> {{track.title}}</td>
+
+
+							  		<td>{{track.genre}}</td>
+							  		<td>
+							  		{% for i in track.rating %}
+							  			<span class="glyphicon glyphicon-star" style="color:black"></span>
+							  		{% endfor %}
+							  		{% for i in track.remaining %}
+							  			<span class="glyphicon glyphicon-star" style="color:#ddd"></span>
+							  		{% endfor %}
+							  		</td>
+							  		<td><a href="{% url 'greedymusic:editTrack' track.id %}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+
+							  	</tr>
+
+						  	
+						
+
+					{% endfor %}
+						</table>
+						  </div>
+						<!-- </div> -->
+
+				{% else %}
+
+					<p>No tracks available</p>
+
+				{% endif %}
+		</div>
+
+	</div>
+
+	<div class="row">
+
+	<div class="col-md-4 col-md-offset-4 text-center">
+
+		<button class="btn btn-danger btn-md" onclick="window.location.href='/greedymusic/addTrack'">Add New Track</button>
+
+	</div>
+
+</body>
